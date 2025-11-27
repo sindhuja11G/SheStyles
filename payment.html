@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SheStyles Bags — Payment</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --accent: #e96a8d; /* Rose Pink */
+        --dark: #1f1f1f;
+        --muted: #666;
+        --bg: #fff3f7;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: var(--bg);
+        color: var(--dark);
+      }
+      header {
+        background: var(--dark);
+        color: #fff;
+        padding: 12px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--accent), #ff8fb4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #fff;
+      }
+      main {
+        padding: 26px 6%;
+      }
+      .container {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      .card {
+        background: #fff;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        flex: 1;
+        min-width: 300px;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 8px;
+        border-radius: 8px;
+        border: 1px solid #eee;
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+        font-weight: 600;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .btn {
+        background: var(--accent);
+        border: none;
+        padding: 12px 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 700;
+        color: #fff;
+      }
+      footer {
+        padding: 20px;
+        text-align: center;
+        background: var(--dark);
+        color: #fff;
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div
+        style="display: flex; gap: 12px; align-items: center; cursor: pointer"
+        onclick="location.href='index.html'"
+      >
+        <div class="logo">SB</div>
+        <div style="color: #fff; font-weight: 700">SheStyles Bags</div>
+      </div>
+      <div>
+        <a href="cart.html" style="color: #fff; text-decoration: none"
+          >Back to Cart</a
+        >
+      </div>
+    </header>
+
+    <main>
+      <h1>Complete your purchase</h1>
+      <div class="container">
+        <div class="card">
+          <h3>Shipping & contact</h3>
+          <form id="payment-form">
+            <label>Full name</label>
+            <input id="name" required placeholder="Your full name" />
+            <label>Email</label>
+            <input
+              id="email"
+              type="email"
+              required
+              placeholder="you@example.com"
+            />
+            <label>Address</label>
+            <input id="address" required placeholder="Street, building" />
+            <div style="display: flex; gap: 12px">
+              <div style="flex: 1">
+                <label>City</label>
+                <input id="city" required placeholder="City" />
+              </div>
+              <div style="width: 120px">
+                <label>PIN</label>
+                <input id="pin" required placeholder="PIN" />
+              </div>
+            </div>
+
+            <h3 style="margin-top: 14px">Payment</h3>
+            <label>Card number</label>
+            <input id="card" placeholder="xxxx xxxx xxxx xxxx" required />
+            <div style="display: flex; gap: 12px">
+              <div style="flex: 1">
+                <label>Expiry (MM/YY)</label>
+                <input id="exp" placeholder="MM/YY" required />
+              </div>
+              <div style="width: 120px">
+                <label>CVV</label>
+                <input id="cvv" placeholder="CVV" required />
+              </div>
+            </div>
+
+            <div style="margin-top: 14px; display: flex; gap: 8px">
+              <button class="btn" type="submit">Pay Now</button>
+              <button
+                type="button"
+                onclick="location.href='cart.html'"
+                style="
+                  border: 1px solid #ddd;
+                  padding: 10px;
+                  border-radius: 8px;
+                  background: transparent;
+                  cursor: pointer;
+                "
+              >
+                Back to cart
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card" style="max-width: 360px">
+          <h3>Order summary</h3>
+          <p class="muted">Items will be charged to your card.</p>
+          <div style="margin-top: 12px">
+            <div style="display: flex; justify-content: space-between">
+              <div>Subtotal</div>
+              <div id="subtotal">₹0</div>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <div>Shipping</div>
+              <div id="shipping">₹0</div>
+            </div>
+            <hr style="margin: 12px 0" />
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                font-weight: 800;
+              "
+            >
+              <div>Total</div>
+              <div id="total">₹0</div>
+            </div>
+            <p id="items-count" class="muted" style="margin-top: 8px">
+              0 items
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>© 2025 SheStyles Bags</footer>
+
+    <script>
+      // load checkout info from localStorage set by cart page
+      const checkout = JSON.parse(
+        localStorage.getItem("shestyles_checkout") || "null"
+      );
+      if (checkout) {
+        document.getElementById("subtotal").textContent =
+          "₹" + checkout.subtotal.toLocaleString();
+        document.getElementById("shipping").textContent =
+          checkout.shipping === 0
+            ? "Free"
+            : "₹" + checkout.shipping.toLocaleString();
+        document.getElementById("total").textContent =
+          "₹" + checkout.total.toLocaleString();
+        document.getElementById("items-count").textContent =
+          "Based on items in your cart";
+      } else {
+        // fallback compute from cart if direct nav
+        const cart = JSON.parse(localStorage.getItem("shestyles_cart") || "{}");
+        let sub = 0;
+        let qty = 0;
+        for (const k in cart) {
+          sub += cart[k].qty * cart[k].price;
+          qty += cart[k].qty;
+        }
+        const ship = sub >= 1999 ? 0 : sub === 0 ? 0 : 99;
+        document.getElementById("subtotal").textContent =
+          "₹" + sub.toLocaleString();
+        document.getElementById("shipping").textContent =
+          ship === 0 ? (sub === 0 ? "—" : "Free") : "₹" + ship;
+        document.getElementById("total").textContent =
+          "₹" + (sub + ship).toLocaleString();
+        document.getElementById("items-count").textContent = qty + " items";
+      }
+
+      // Payment handling
+      document
+        .getElementById("payment-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          // simulate success: clear cart and checkout tokens then redirect
+          localStorage.removeItem("shestyles_cart");
+          localStorage.removeItem("shestyles_checkout");
+          // optional: store last order summary for thank you page
+          const orderSummary = {
+            name: document.getElementById("name").value || "",
+            total: document.getElementById("total").textContent || "",
+            datetime: new Date().toISOString(),
+          };
+          localStorage.setItem(
+            "shestyles_last_order",
+            JSON.stringify(orderSummary)
+          );
+          setTimeout(() => (location.href = "thankyou.html"), 700);
+        });
+
+      // update cart badge
+      const cartCount = (function () {
+        const c = JSON.parse(localStorage.getItem("shestyles_cart") || "{}");
+        let q = 0;
+        for (const k in c) q += c[k].qty;
+        return q;
+      })();
+    </script>
+  </body>
+</html>
