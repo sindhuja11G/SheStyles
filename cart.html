@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SheStyles Bags — Cart</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --accent: #e96a8d;
+        --dark: #1f1f1f;
+        --muted: #666;
+        --bg: #fff3f7;
+      }
+      * { box-sizing: border-box; }
+      body { margin:0; font-family:"Poppins",sans-serif; background:var(--bg); color:var(--dark); }
+      header { background:var(--dark); color:#fff; padding:12px 22px; display:flex; align-items:center; justify-content:space-between; }
+      .logo { width:40px; height:40px; border-radius:8px; background:linear-gradient(135deg, var(--accent), #ff8fb4); display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff; }
+      main { padding:26px 6%; }
+      h1 { margin:0 0 12px; }
+      .cart-list { display:flex; flex-direction:column; gap:12px; }
+      .item { display:flex; gap:12px; background:#fff; padding:12px; border-radius:12px; align-items:center; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+      .item img { width:92px; height:92px; object-fit:cover; border-radius:8px; }
+      .info { flex:1; }
+      .info h3 { margin:0 0 6px; }
+      .qty { display:flex; align-items:center; gap:8px; }
+      .qty button { padding:6px 10px; border-radius:8px; border:1px solid #ddd; background:transparent; cursor:pointer; }
+      .summary { background:#fff; padding:18px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+      .flex { display:flex; gap:20px; flex-wrap:wrap; }
+      .muted { color:var(--muted); }
+      .btn { background:var(--accent); border:none; padding:12px 16px; border-radius:10px; cursor:pointer; color:#fff; font-weight:600; text-decoration:none; display:inline-block; text-align:center; }
+      .ghost { background:transparent; border:1px solid #ddd; padding:10px; border-radius:10px; cursor:pointer; }
+      footer { padding:20px; text-align:center; background:#1f1f1f; color:#fff; margin-top:30px; }
+      @media (max-width:720px){ .flex { flex-direction:column; } }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div style="display:flex; gap:12px; align-items:center; cursor:pointer" onclick="location.href='index.html'">
+        <div class="logo">SB</div>
+        <div style="color:#fff; font-weight:700">SheStyles Bags</div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center">
+        <a href="products.html" style="color:#fff; text-decoration:none">Continue Shopping</a>
+      </div>
+    </header>
+
+    <main>
+      <h1>Your Cart</h1>
+      <div class="flex">
+        <div style="flex:1">
+          <div id="cart-list" class="cart-list"></div>
+        </div>
+
+        <div style="width:320px">
+          <div class="summary">
+            <h3>Order Summary</h3>
+            <p class="muted" id="summary-items">0 items</p>
+            <div style="display:flex; justify-content:space-between; margin:12px 0;">
+              <div class="muted">Subtotal</div>
+              <div id="subtotal">₹0</div>
+            </div>
+            <div style="display:flex; justify-content:space-between">
+              <div class="muted">Shipping</div>
+              <div id="shipping">₹0</div>
+            </div>
+            <hr style="margin:12px 0" />
+            <div style="display:flex; justify-content:space-between; font-weight:700;">
+              <div>Total</div>
+              <div id="total">₹0</div>
+            </div>
+            <div style="margin-top:12px">
+              <!-- Simplified for cross-domain tracking: simple link to payment page -->
+              <a href="payment.html" class="btn">Proceed to Payment</a>
+              <button class="ghost" id="clear-cart" style="width:100%; margin-top:8px">Clear Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>© 2025 SheStyles Bags</footer>
+
+    <script>
+      function getCart(){ try{ return JSON.parse(localStorage.getItem("shestyles_cart")||"{}"); } catch(e){ return {}; } }
+      function saveCart(c){ localStorage.setItem("shestyles_cart",JSON.stringify(c)); renderCart(); updateCartBadge(); }
+      function updateCartBadge(){ const c=getCart(); let q=0; for(const k in c) q+=c[k].qty; localStorage.setItem("shestyles_cart_count",q); }
+
+      const cartList=document.getElementById("cart-list");
+      const subtotalEl=document.getElementById("subtotal");
+      const shippingEl=document.getElementById("shipping");
+      const totalEl=document.getElementById("total");
+      const summaryItems=document.getElementById("summary-items");
+
+      function renderCart(){
+        const cart=getCart();
+        cartList.innerHTML="";
+        const keys=Object.keys(cart);
+        if(keys.length===0){
+          cartList.innerHTML=`<div style="padding:20px;background:#fff;border-radius:12px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,0.04)">
+          Your cart is empty.<br><br>
+          <button class="btn" onclick="location.href='products.html'">Shop Bags</button>
+          </div>`;
+          subtotalEl.textContent="₹0"; shippingEl.textContent="₹0"; totalEl.textContent="₹0"; summaryItems.textContent="0 items"; return;
+        }
+        let sub=0;
+        keys.forEach(k=>{
+          const it=cart[k];
+          const item=document.createElement("div");
+          item.className="item";
+          item.innerHTML=`<img src="${it.img}" alt="${it.title}">
+            <div class="info">
+              <h3>${it.title}</h3>
+              <div style="display:flex;gap:12px;align-items:center">
+                <div class="qty">
+                  <button onclick="changeQty('${k}',-1)">−</button>
+                  <div style="padding:6px 10px;border-radius:8px;border:1px solid #eee">${it.qty}</div>
+                  <button onclick="changeQty('${k}',1)">+</button>
+                </div>
+                <div style="margin-left:auto;font-weight:700">₹${(it.price*it.qty).toLocaleString()}</div>
+              </div>
+              <div style="margin-top:8px;font-size:13px;color:var(--muted)">
+                <button onclick="removeItem('${k}')" style="background:transparent;border:none;color:#c33;cursor:pointer">Remove</button>
+              </div>
+            </div>`;
+          cartList.appendChild(item);
+          sub+=it.price*it.qty;
+        });
+        const shipping=sub>=1999?0:99;
+        subtotalEl.textContent="₹"+sub.toLocaleString();
+        shippingEl.textContent=shipping===0?"Free":"₹"+shipping;
+        totalEl.textContent="₹"+(sub+shipping).toLocaleString();
+        summaryItems.textContent=`${keys.reduce((a,k)=>a+cart[k].qty,0)} items`;
+        updateCartBadge();
+      }
+
+      function changeQty(id,delta){ const cart=getCart(); if(!cart[id]) return; cart[id].qty+=delta; if(cart[id].qty<=0) delete cart[id]; saveCart(cart); }
+      function removeItem(id){ const cart=getCart(); delete cart[id]; saveCart(cart); }
+
+      document.getElementById("clear-cart").addEventListener("click",()=>{
+        if(confirm("Clear all items from cart?")){ localStorage.removeItem("shestyles_cart"); renderCart(); updateCartBadge(); }
+      });
+
+      renderCart();
+      updateCartBadge();
+    </script>
+  </body>
+</html>
