@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SheStyles — Bags</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --accent: #ff5f8f; /* Pink */
+        --dark: #1a1a1a;
+        --muted: #666;
+        --card: #fff;
+        --bg: #fff4f7; /* Soft light pink */
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: var(--bg);
+        color: #111;
+      }
+      header {
+        background: var(--dark);
+        color: #fff;
+        padding: 12px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+      }
+      .logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--accent), #ffb6c1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: white;
+      }
+      nav {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      nav a {
+        color: #fff;
+        text-decoration: none;
+      }
+      main {
+        padding: 28px 6%;
+      }
+      h1 {
+        margin: 0 0 12px;
+      }
+      .controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+      }
+      .grid {
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .card {
+        width: 260px;
+        background: var(--card);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        text-align: center;
+      }
+      .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+      .card h3 {
+        margin: 12px 10px 6px;
+      }
+      .card p {
+        color: var(--muted);
+        margin: 0 12px 12px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        padding: 12px;
+        justify-content: center;
+      }
+      .btn {
+        background: var(--accent);
+        border: none;
+        padding: 10px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        color: #fff;
+      }
+      .secondary {
+        background: transparent;
+        border: 2px solid var(--dark);
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .badge {
+        background: #111;
+        color: #fff;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 13px;
+      }
+      footer {
+        padding: 20px;
+        text-align: center;
+        background: #222;
+        color: #fff;
+        margin-top: 30px;
+      }
+
+      /* MODAL */
+      #modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      #modal {
+        background: white;
+        width: 90%;
+        max-width: 420px;
+        padding: 20px;
+        border-radius: 14px;
+        text-align: center;
+        animation: pop 0.25s ease;
+      }
+      #modal img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+      #modal button {
+        margin-top: 12px;
+        width: 100%;
+      }
+      .close-btn {
+        background: #111;
+        color: white;
+        border: none;
+        padding: 8px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      @keyframes pop {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="brand" onclick="location.href='index.html'">
+        <div class="logo">SS</div>
+        <div>
+          <div style="font-weight: 700">SheStyles</div>
+          <div style="font-size: 12px; color: #ddd">Bags</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="index.html">Home</a>
+        <button class="secondary" onclick="location.href='cart.html'">
+          🛒 Cart <span id="cart-count" class="badge">0</span>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Our Bags Collection</h1>
+      <p style="color: var(--muted); margin-top: 4px">
+        Click "Add to cart" to collect items, then proceed to checkout.
+      </p>
+
+      <div class="controls">
+        <input
+          id="search"
+          placeholder="Search bags..."
+          style="
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            width: 220px;
+          "
+        />
+        <button class="secondary" onclick="resetFilters()">Reset</button>
+        <div style="margin-left: auto">
+          <button class="btn" onclick="location.href='cart.html'">
+            View Cart
+          </button>
+        </div>
+      </div>
+
+      <div id="product-grid" class="grid"></div>
+    </main>
+
+    <footer>© 2025 SheStyles</footer>
+
+    <!-- MODAL -->
+    <div id="modal-overlay">
+      <div id="modal">
+        <img id="m-img" />
+        <h2 id="m-title"></h2>
+        <p id="m-desc" style="color: #555"></p>
+        <h3 id="m-price" style="margin: 8px 0"></h3>
+
+        <button class="btn" id="m-add-btn">Add to Cart</button>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+
+    <script>
+      const PRODUCTS = [
+        {
+          id: "b1",
+          title: "Classic Leather Tote",
+          price: 2199,
+          desc: "Spacious premium leather tote for everyday use.",
+          img: "https://plus.unsplash.com/premium_photo-1670984076180-22a6c8f27f2b?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fENsYXNzaWMlMjBMZWF0aGVyJTIwVG90ZSUyMGZvciUyMHdvbWVufGVufDB8fDB8fHww",
+        },
+        {
+          id: "b2",
+          title: "Luxury Shoulder Bag",
+          price: 2799,
+          desc: "Elegant gold-chained shoulder bag for outings.",
+          img: "https://images.unsplash.com/photo-1589731119540-c4586781dae1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        },
+        {
+          id: "b3",
+          title: "Mini Crossbody Bag",
+          price: 1499,
+          desc: "Lightweight mini bag perfect for casual days.",
+          img: "https://images.unsplash.com/photo-1556304044-0699e31c6a34?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        },
+        {
+          id: "b4",
+          title: "Premium Handbag",
+          price: 2499,
+          desc: "Structured handbag with a classy matte finish.",
+          img: "https://plus.unsplash.com/premium_photo-1670963025497-d6d582ea9319?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        },
+        {
+          id: "b5",
+          title: "Travel Duffel Bag",
+          price: 2999,
+          desc: "Spacious duffel for weekends and short trips.",
+          img: "https://plus.unsplash.com/premium_photo-1695604460849-d9a4ad43dcee?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fHw%3D",
+        },
+        {
+          id: "b6",
+          title: "Designer Sling Bag",
+          price: 1599,
+          desc: "Trendy sling with high-quality zipper and strap.",
+          img: "https://images.unsplash.com/photo-1760624294514-3548bee70d26?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        },
+      ];
+
+      const grid = document.getElementById("product-grid");
+
+      function renderProducts(list) {
+        grid.innerHTML = "";
+        list.forEach((p) => {
+          const d = document.createElement("div");
+          d.className = "card";
+          d.innerHTML = `
+            <img src="${p.img}" alt="${p.title}">
+            <h3>${p.title}</h3>
+            <p>₹${p.price} • ${p.desc}</p>
+            <div class="row">
+              <button class="btn" onclick="openModal('${p.id}')">Details</button>
+              <button class="secondary" onclick="addToCart('${p.id}')">Add to Cart</button>
+            </div>`;
+          grid.appendChild(d);
+        });
+      }
+
+      function getCart() {
+        try {
+          return JSON.parse(localStorage.getItem("shestyles_cart") || "{}");
+        } catch (e) {
+          return {};
+        }
+      }
+      function saveCart(c) {
+        localStorage.setItem("shestyles_cart", JSON.stringify(c));
+        updateCartCount();
+      }
+      function updateCartCount() {
+        const c = getCart();
+        let q = 0;
+        for (const k in c) q += c[k].qty;
+        document.getElementById("cart-count").textContent = q;
+      }
+      function addToCart(id) {
+        const p = PRODUCTS.find((x) => x.id === id);
+        const cart = getCart();
+        if (cart[id]) cart[id].qty++;
+        else
+          cart[id] = { id, title: p.title, price: p.price, qty: 1, img: p.img };
+        saveCart(cart);
+      }
+
+      function resetFilters() {
+        document.getElementById("search").value = "";
+        renderProducts(PRODUCTS);
+      }
+      document.getElementById("search").addEventListener("input", (e) => {
+        const q = e.target.value.toLowerCase();
+        renderProducts(
+          PRODUCTS.filter(
+            (p) =>
+              p.title.toLowerCase().includes(q) ||
+              p.desc.toLowerCase().includes(q)
+          )
+        );
+      });
+
+      function openModal(id) {
+        const p = PRODUCTS.find((x) => x.id === id);
+        document.getElementById("m-img").src = p.img;
+        document.getElementById("m-title").textContent = p.title;
+        document.getElementById("m-desc").textContent = p.desc;
+        document.getElementById("m-price").textContent =
+          "₹" + p.price.toLocaleString();
+
+        document.getElementById("m-add-btn").onclick = () => addToCart(id);
+
+        document.getElementById("modal-overlay").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("modal-overlay").style.display = "none";
+      }
+
+      renderProducts(PRODUCTS);
+      updateCartCount();
+    </script>
+  </body>
+</html>
